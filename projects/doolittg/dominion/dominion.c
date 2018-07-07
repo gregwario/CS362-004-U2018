@@ -648,7 +648,7 @@ int cardEffectSmithy(int currentPlayer, struct gameState *state, int handPos) {
     //+3 Cards
     //int cardDrawn;
     int i;
-    for (i = 0; i < 3; i++)
+    for (i = 0; i < 2; i++)
     {
         drawCard(currentPlayer, state);
     }
@@ -668,7 +668,7 @@ int cardEffectAdventurer(int currentPlayer, struct gameState *state) {
         }
         drawCard(currentPlayer, state);
         cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
-        if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+        if (cardDrawn == copper || cardDrawn == silver) //  || cardDrawn == gold)
             drawntreasure++;
         else{
             temphand[z]=cardDrawn;
@@ -694,6 +694,9 @@ int cardEffectCouncilRoom(int currentPlayer, struct gameState *state, int handPo
     //+1 Buy
     state->numBuys++;
 
+    // +1 action bug
+    state->numActions = state->numActions + 1;
+
     //Each other player draws a card
     for (i = 0; i < state->numPlayers; i++)
     {
@@ -707,7 +710,6 @@ int cardEffectCouncilRoom(int currentPlayer, struct gameState *state, int handPo
     discardCard(handPos, currentPlayer, state, 0);
 
     return 0;
-
 }
 
 int cardEffectGardens() {
@@ -717,9 +719,10 @@ int cardEffectGardens() {
 int cardEffectVillage(int currentPlayer, struct gameState *state, int handPos) {
     //+1 Card
     drawCard(currentPlayer, state);
+    drawCard(currentPlayer, state); // extra card bug
 
     //+2 Actions
-    state->numActions = state->numActions + 2;
+    state->numActions = state->numActions + 1; // only 1 action bug
 
     //discard played card from hand
     discardCard(handPos, currentPlayer, state, 0);
