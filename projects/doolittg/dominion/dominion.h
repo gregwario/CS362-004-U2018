@@ -128,4 +128,19 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
+int cardEffectSmithy(int currentPlayer, struct gameState *state, int handPos);
+/* adds 3 cards to hand */
+
+int cardEffectAdventurer(int currentPlayer, struct gameState *state);
+/* add 2 treasure cards to your hand */
+
+int cardEffectCouncilRoom(int currentPlayer, struct gameState *state, int handPos);
+/* add 4 cards and 1 buy */
+
+int cardEffectGardens();
+/* worth 1 VP for every 10 cards you have */
+
+int cardEffectVillage(int currentPlayer, struct gameState *state, int handPos);
+/* add 1 card and two actions  */
+
 #endif
