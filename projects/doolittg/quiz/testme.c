@@ -16,10 +16,10 @@ char *inputString()
     // QUIZ: rewrite this function
 	char letters[] = { 'r', 'e', 's', 'e', 't', '\0' };
 	char word[6];
-	int length = rand() % 6;
 	int i;
-	for (i = 0; i < length; i++) {
-		word[i] = letters[i];
+	for (i = 0; i < 6; i++) {
+		int index = rand() % 6;
+		word[i] = letters[index];
 	}
 	return word;
 }
