@@ -5,7 +5,7 @@
 * Assignment 3
 *
 * Description: this file tests the refactored code from assignment 2. Specifically,
-* it tests the funciton created for the Adventurer card.
+* it tests the funciton created for the Village card.
 *
 * This was added to the makefile to build this test:
 * cardtest1: cardtest2.c dominion.o rngs.o assert_equal.o
@@ -51,7 +51,7 @@ int main() {
 
 			G.handCount[p] = handCount;                 // set the number of cards on hand
 			memcpy(&G_before, &G, sizeof(struct gameState)); // make a copy of game state
-			cardEffectVillage(p, &G, 0);				// call the refactored Adventurer function
+			cardEffectVillage(p, &G, 0);				// call the refactored Village function
 														// now compare the number of cards in hand. it should have 1 extra card, minus the 1 
 														// Village card played.  the Village card should also add 2 actions.
 														// Additionally, I added a bug in assignment 2 that Village will add 2 cards, and only

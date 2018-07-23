@@ -5,7 +5,7 @@
 * Assignment 3
 *
 * Description: this file tests the refactored code from assignment 2. Specifically,
-* it tests the funciton created for the Council Room card.
+* it tests the function from dominion.c discardCard().
 *
 * This was added to the makefile to build this test:
 * cardtest3: cardtest3.c dominion.o rngs.o assert_equal.o
@@ -37,8 +37,7 @@ int main() {
 	struct gameState G_before;
 	int maxHandCount = 5;
 
-	printf("TESTING Council Room: cardEffectCouncilRoom():\n");
-	printf("TESTING card effect should add 4 cards and 1 buy");
+	printf("TESTING discardCard():\n");
 	for (p = 0; p < numPlayer; p++)
 	{
 		for (handCount = 1; handCount <= maxHandCount; handCount++)
@@ -51,28 +50,41 @@ int main() {
 
 			G.handCount[p] = handCount;                 // set the number of cards on hand
 			memcpy(&G_before, &G, sizeof(struct gameState)); // make a copy of game state
-			cardEffectCouncilRoom(p, &G, 0);				// call the refactored Council Room function
-															// now compare the number of cards in hand. it should have 4 extra cards, minus the 1 
-															// Adventurer card played.
-#if (DEBUGGING == 1)
-			printf("before %d cards, after %d cards, expected 3 more after\n", G_before.handCount[p], G.handCount[p]);
-#endif
-			failureCount += assertEqual(G_before.handCount[p] == G.handCount[p] - 3);
+			discardCard(handCount - 1, p, &G, 0);		// call the built-in discardCard function, with trash param turned off
 
-			// now compare the number of buys in the current state. it should have 1 extra buy
 #if (DEBUGGING == 1)
-			printf("before %d buys, after %d buys, expected 1 more after \n", G_before.numBuys, G.numBuys);
+			printf("played card(s): before %d, after %d, expected 1 more after\n", G_before.playedCardCount, G.playedCardCount);
 #endif
-			failureCount += assertEqual(G_before.numBuys == G.numBuys - 1);
+			failureCount += assertEqual(G.playedCardCount == G_before.playedCardCount + 1);
+#if (DEBUGGING == 1)
+			printf("current card(s) in hand: before %d, after %d. expected 1 less after\n", G_before.handCount[p], G.handCount[p]);
+#endif
+			failureCount += assertEqual(G.handCount[p] == G_before.handCount[p] - 1);
 
-			// now compare the number of actions in the current state. it should have 1 fewer actions bc
-			// we just used one by player this card.
-			// additionally, i added a bug in assignment 2 such that Council Room will actually add 1 action 
-			// instead of removing 1 action.
+		}
+	}
+
+	// same loop, with trash flag turned on.
+	for (p = 0; p < numPlayer; p++)
+	{
+		for (handCount = 1; handCount <= maxHandCount; handCount++)
+		{
 #if (DEBUGGING == 1)
-			printf("before %d actions, after %d actions, expected 1 less after\n", G_before.numActions, G.numActions);
+			printf("TESTING player % d with %d card(s) in hand.\n", p, handCount);
 #endif
-			failureCount += assertEqual(G_before.numActions == G.numActions + 1);
+			memset(&G, 23, sizeof(struct gameState));   // clear the game state
+			initializeGame(numPlayer, cards, seed, &G); // initialize a new game
+
+			G.handCount[p] = handCount;                 // set the number of cards on hand
+			memcpy(&G_before, &G, sizeof(struct gameState)); // make a copy of game state
+			discardCard(handCount - 1, p, &G, 1);		// call the built-in discardCard function, with trash param turned on
+
+#if (DEBUGGING == 1)
+			printf("played card(s): before %d, after %d, expected 0 more after\n", G_before.playedCardCount, G.playedCardCount);
+#endif
+			failureCount += assertEqual(G.playedCardCount == G_before.playedCardCount );
+			
+
 		}
 	}
 	if (failureCount != 0) {
