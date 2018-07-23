@@ -38,7 +38,7 @@ int main() {
 	int maxHandCount = 5;
 
 	printf("TESTING Adventurer: cardEffectAdventurer():\n");
-	printf("TESTING card effect should add 2 more treasure cards");
+	printf("TESTING card effect should add 2 more treasure cards\n");
 	for (p = 0; p < numPlayer; p++)
 	{
 		for (handCount = 1; handCount <= maxHandCount; handCount++)

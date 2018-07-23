@@ -38,7 +38,7 @@ int main() {
 	int maxHandCount = 5;
 
 	printf("TESTING Smithy: cardEffectSmithy():\n");
-	printf("TESTING card effect should add 3 cards and remove 1 card");
+	printf("TESTING card effect should add 3 cards and remove 1 card\n");
 	for (p = 0; p < numPlayer; p++)
 	{
 		for (handCount = 1; handCount <= maxHandCount; handCount++)

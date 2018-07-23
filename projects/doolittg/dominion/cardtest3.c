@@ -38,7 +38,7 @@ int main() {
 	int maxHandCount = 5;
 
 	printf("TESTING Council Room: cardEffectCouncilRoom():\n");
-	printf("TESTING card effect should add 4 cards and 1 buy");
+	printf("TESTING card effect should add 4 cards and 1 buy\n");
 	for (p = 0; p < numPlayer; p++)
 	{
 		for (handCount = 1; handCount <= maxHandCount; handCount++)

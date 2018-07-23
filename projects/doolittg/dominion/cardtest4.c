@@ -38,7 +38,7 @@ int main() {
 	int maxHandCount = 5;
 
 	printf("TESTING Village: cardEffectVillage():\n");
-	printf("TESTING card effect should add 1 card and 2 actions");
+	printf("TESTING card effect should add 1 card and 2 actions\n");
 	for (p = 0; p < numPlayer; p++)
 	{
 		for (handCount = 1; handCount <= maxHandCount; handCount++)

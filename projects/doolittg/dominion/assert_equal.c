@@ -8,15 +8,6 @@
 #include <string.h>
 #include <stdio.h>
 
-int assertEqual(int A) {
-	if (A == 1) {
-		return assertCompare(1, 1);
-	}
-	else {
-		return assertCompare(1, 0);
-	}
-}
-
 int assertCompare(int A, int B) {
 	if (A == B) {
 		printf("PASSES 1 TEST.\n");
@@ -25,6 +16,15 @@ int assertCompare(int A, int B) {
 	else {
 		printf("FAILS 1 TEST.\n");
 		return 1;
+	}
+}
+
+int assertEqual(int A) {
+	if (A == 1) {
+		return assertCompare(1, 1);
+	}
+	else {
+		return assertCompare(1, 0);
 	}
 }
 

@@ -31,14 +31,10 @@ int main() {
 	int failureCount = 0;
 	int seed = rand();
 	int numPlayer = 4;
-	int p, handCount;
 	int cards[10] = { adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall };
 
-	int i;
-	int score;
 	struct gameState G;
 
-	score = 0;
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state
 	initializeGame(numPlayer, cards, seed, &G); // initialize a new game
 	G.hand[0][0] = curse;
@@ -50,7 +46,6 @@ int main() {
 	printf("expected: 3 curses (-1) and 2 provinces (6) = 9, result: %d\n", scoreFor(0, &G));
 	failureCount += assertEqual(9 == scoreFor(0, &G));
 
-	score = 0;
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state
 	initializeGame(numPlayer, cards, seed, &G); // initialize a new game
 	G.hand[1][0] = duchy;
@@ -61,7 +56,6 @@ int main() {
 	printf("expected: 2 duchy in hand (3) and 1 province (6) in discard = 12, result: %d\n", scoreFor(1, &G));
 	failureCount += assertEqual(12 == scoreFor(1, &G));
 
-	score = 0;
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state
 	initializeGame(numPlayer, cards, seed, &G); // initialize a new game
 	G.hand[2][0] = duchy;
