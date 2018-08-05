@@ -92,4 +92,4 @@ unittestresults.out: dominion.o interface.o cardtest1 cardtest2 cardtest3 cardte
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe test1 test2 test3 test4 test5 test6 test7 test8 randomtestcard1 randomtestcard2 randomtestcard3
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe test1 test2 test3 test4 test5 test6 test7 test8 randomtestcard1 randomtestcard2 randomtestadventurer

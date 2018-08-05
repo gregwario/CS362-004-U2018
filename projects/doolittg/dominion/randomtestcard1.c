@@ -5,7 +5,7 @@
 * Assignment 4
 *
 * Description: this file tests the refactored code from assignment 2. Specifically,
-* it adds random tests for the adventure card.
+* it adds random tests for the smithy card.
 * 
 * This was added to the makefile to build this test:
 * randomtestcard1: randomtestcard1.c dominion.o rngs.o assert_equal.o
@@ -60,7 +60,7 @@ int main() {
 
         G.whoseTurn = p; //player;
         G.deckCount[p] = rand() % 80 / 2;
-        G.handCount[p] = rand() % 20 / 2;  // MAX_HAND = 500
+        G.handCount[p] = rand() % 20 / 2; 
 
         // randomly select a player
         // call checkSmithyCard
@@ -118,5 +118,6 @@ int checkSmithyCard(int p, struct gameState *post, int handPos) {
             printf("card count pos: %d\n\n", post->handCount[p]);
         }
     }
+    free(pre);
     return problemCount;
 }

@@ -5,11 +5,11 @@
 * Assignment 4
 *
 * Description: this file tests the refactored code from assignment 2. Specifically,
-* it adds random tests for the adventure card.
+* it adds random tests for the village card.
 * 
 * This was added to the makefile to build this test:
-* randomtestcard1: randomtestcard1.c dominion.o rngs.o assert_equal.o
-*	gcc -o randomtestcard -g  randomtestcard1.c dominion.o rngs.o assert_equal.o $(CFLAGS)
+* randomtestcard2: randomtestcard2.c dominion.o rngs.o assert_equal.o
+*	gcc -o randomtestcard2 -g  randomtestcard2.c dominion.o rngs.o assert_equal.o $(CFLAGS)
 ********************/
 
 #include "dominion.h"
@@ -27,7 +27,7 @@
 #define DEBUG 1
 #endif
 
-int checkSmithyCard(int p, struct gameState *post, int handPos);
+int checkVillageCard(int p, struct gameState *post, int handPos);
 
 int main() {
 
@@ -38,8 +38,9 @@ int main() {
 	int cards[10] = { adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall };
 	struct gameState G;
 
-	printf("TESTING (random test of smithy card):\n");
-	// card should add 3 cards and remove 1 card
+	printf("TESTING (random test of village card):\n");
+	// card should add 1 card and add 2 actions. it has 
+    // a bug so it that adds 2 cards, and 1 action
     
     const int NUM_TESTS = 5000;
     int i = 0;
@@ -60,22 +61,22 @@ int main() {
 
         G.whoseTurn = p; //player;
         G.deckCount[p] = rand() % 80 / 2;
-        G.handCount[p] = rand() % 20 / 2;  // MAX_HAND = 500
+        G.handCount[p] = rand() % 20 / 2;
 
         // randomly select a player
-        // call checkSmithyCard
-        failureCount += checkSmithyCard(p, &G, handP);
+        // call checkVillageCard
+        failureCount += checkVillageCard(p, &G, handP);
         i++;
     }
     printf("Testing complete, after %d tests run.\n", NUM_TESTS);
     if (failureCount) {
-        printf("Found %d test failures while testing Smithy.\n", failureCount);
+        printf("Found %d test failures while testing Village.\n", failureCount);
     } else {
-        printf("No test failures found while testing Smithy.\nAll tests pass!\n");
+        printf("No test failures found while testing Village.\nAll tests pass!\n");
     }
 }
 
-int checkSmithyCard(int p, struct gameState *post, int handPos) {
+int checkVillageCard(int p, struct gameState *post, int handPos) {
 
     struct gameState *pre;
     pre = (struct gameState*) malloc(sizeof(struct gameState));
@@ -83,40 +84,30 @@ int checkSmithyCard(int p, struct gameState *post, int handPos) {
 
     int r;
 
-    // we'll call cardEffect, and use smithy card on 'post' game state
-    r = cardEffect(smithy, 0, 0, 0, post, handPos, 0);
+    // we'll call cardEffect, and use village card on 'post' game state
+    r = cardEffect(village, 0, 0, 0, post, handPos, 0);
     assert(r == 0);
     
-    // we'll manually run smithy on 'pre' game state
-    int i;
-    for (i = 0; i < 3; i++) { // draw 3 cards, 
-        // this version of smithy has a bug 
-        // that only draws 2 cards.
-        if (pre->deckCount[p] > 0) {
-            drawCard(p, pre);
-        }
-    }
+    // we'll manually run village on 'pre' game state
+    drawCard(p, pre);
+    pre->numActions = pre->numActions + 2;
     discardCard(handPos, p, pre, 0);
     
-    // if any discrepancy in handCount, report a problem
-    int problemCount;
+    // if any discrepancies, report a problem
+    int problemCount = 0;
     
     // test that some known effects on pre state match the effects
     // on post state, such as handCount, deckCount and numActions
-    if (
-            pre->handCount[p] == post->handCount[p]
-        ) { 
-        // can't use our typical gamestate test:
-        // if (memcmp(pre, post, sizeof(struct gameState)) == 0) {
-        // bc we can't predict which cards will be drawn, and
-        // we're not in parity with all actual game play
-        problemCount = 0;
-    } else {
-        problemCount = 1;
-        if (DEBUG) {
-            printf("card count pre: %d\n", pre->handCount[p]);
-            printf("card count pos: %d\n\n", post->handCount[p]);
-        }
+    if (pre->numActions != post->numActions) { 
+        problemCount = problemCount + 1;
     }
-    return problemCount;
+    if (pre->handCount[p] != post->handCount[p]) {
+        problemCount = problemCount + 1;
+    }
+    int fail = 0;
+    if(problemCount > 0) {
+        fail = 1;
+    }
+    free(pre);
+    return fail;
 }

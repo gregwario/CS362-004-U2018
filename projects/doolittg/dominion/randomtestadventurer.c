@@ -27,7 +27,7 @@
 #define DEBUG 1
 #endif
 
-int checkSmithyCard(int p, struct gameState *post, int handPos);
+int checkAdventurerCard(int p, struct gameState *post, int handPos);
 
 int main() {
 
@@ -38,7 +38,7 @@ int main() {
 	int cards[10] = { adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall };
 	struct gameState G;
 
-	printf("TESTING (random test of smithy card):\n");
+	printf("TESTING (random test of adventurer card):\n");
 	// card should add 3 cards and remove 1 card
     
     const int NUM_TESTS = 5000;
@@ -46,7 +46,9 @@ int main() {
     int failureCount = 0;
     
     while (i < NUM_TESTS) {
-        // printf("test number %d\n", i);
+        if (DEBUG) {
+            printf("test number %d\n", i);
+        }
         // randomly arrange game state
 	    int seed = rand();
         int numPlayers = 2; //rand() % 9 + 2; // 2-10 players
@@ -60,22 +62,34 @@ int main() {
 
         G.whoseTurn = p; //player;
         G.deckCount[p] = rand() % 80 / 2;
-        G.handCount[p] = rand() % 20 / 2;  // MAX_HAND = 500
+        G.handCount[p] = rand() % 20 / 2;
 
         // randomly select a player
-        // call checkSmithyCard
-        failureCount += checkSmithyCard(p, &G, handP);
+        // call checkAdventurerCard
+        failureCount += checkAdventurerCard(p, &G, handP);
         i++;
     }
     printf("Testing complete, after %d tests run.\n", NUM_TESTS);
     if (failureCount) {
-        printf("Found %d test failures while testing Smithy.\n", failureCount);
+        printf("Found %d test failures while testing Adventurer.\n", failureCount);
     } else {
-        printf("No test failures found while testing Smithy.\nAll tests pass!\n");
+        printf("No test failures found while testing Adventurer.\nAll tests pass!\n");
     }
 }
 
-int checkSmithyCard(int p, struct gameState *post, int handPos) {
+int countTreasureCards(int p, struct gameState *G) {
+    int treasureCount = 0;
+    int i = 0;
+    for (i = 0; i < G->handCount[p]; i++) {
+        int card = G->hand[p][i];
+        if (card == copper || card == silver || card == gold) {
+            treasureCount++;
+        }
+    }
+    return treasureCount;
+}
+
+int checkAdventurerCard(int p, struct gameState *post, int handPos) {
 
     struct gameState *pre;
     pre = (struct gameState*) malloc(sizeof(struct gameState));
@@ -84,39 +98,32 @@ int checkSmithyCard(int p, struct gameState *post, int handPos) {
     int r;
 
     // we'll call cardEffect, and use smithy card on 'post' game state
-    r = cardEffect(smithy, 0, 0, 0, post, handPos, 0);
+    //r = cardEffect(adventurer, 0, 0, 0, post, handPos, 0);
+    r = cardEffectAdventurer(p, post);
+
     assert(r == 0);
     
-    // we'll manually run smithy on 'pre' game state
-    int i;
-    for (i = 0; i < 3; i++) { // draw 3 cards, 
-        // this version of smithy has a bug 
-        // that only draws 2 cards.
-        if (pre->deckCount[p] > 0) {
-            drawCard(p, pre);
-        }
-    }
-    discardCard(handPos, p, pre, 0);
+    // we'll check that we have two more treasures in post than in pre 
     
     // if any discrepancy in handCount, report a problem
-    int problemCount;
+    int problemCount = 0;
     
-    // test that some known effects on pre state match the effects
-    // on post state, such as handCount, deckCount and numActions
-    if (
-            pre->handCount[p] == post->handCount[p]
-        ) { 
-        // can't use our typical gamestate test:
-        // if (memcmp(pre, post, sizeof(struct gameState)) == 0) {
-        // bc we can't predict which cards will be drawn, and
-        // we're not in parity with all actual game play
-        problemCount = 0;
-    } else {
-        problemCount = 1;
-        if (DEBUG) {
-            printf("card count pre: %d\n", pre->handCount[p]);
-            printf("card count pos: %d\n\n", post->handCount[p]);
-        }
+    // compare the treasure cards before and after
+    if (countTreasureCards(p, pre) + 2 != countTreasureCards(p, post)) {
+        problemCount = problemCount + 1;
     }
-    return problemCount;
+
+    // also check the count of all the cards:
+    if (pre->handCount[p] + 2 != post->handCount[p]) {
+        if (DEBUG) {
+            printf("expect: %d + 2 != %d\n", pre->handCount[p], post->handCount[p]);
+        }
+        problemCount = problemCount + 1;
+    }
+    int fail = 0;
+    if (problemCount > 0) {
+        fail = 1;
+    }
+    free(pre);
+    return fail;
 }
