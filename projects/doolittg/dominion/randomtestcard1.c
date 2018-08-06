@@ -41,7 +41,7 @@ int main() {
 	printf("TESTING (random test of smithy card):\n");
 	// card should add 3 cards and remove 1 card
     
-    const int NUM_TESTS = 5000;
+    const int NUM_TESTS = 50000; // roughly 10% failure rate
     int i = 0;
     int failureCount = 0;
     
