@@ -90,12 +90,20 @@ unittestresults.out: dominion.o interface.o cardtest1 cardtest2 cardtest3 cardte
 	gcov -f -b dominion.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out 	
 
-randomtestresults.out: dominion.o interface.o randomtestcard1 randomtestcard2 randomtestcard1 randomtestadventurer
-	./randomtestcard1 >> randomtestresults.out
-	./randomtestcard2 >> randomtestresults.out
-	./randomtestadventurer >> randomtestresults.out
-	gcov -f -b dominion.c >> randomtestresults.out
-	cat dominion.c.gcov >> randomtestresults.out
+randomtestcard1.out: dominion.o interface.o randomtestcard1 
+	./randomtestcard1 >> randomtestcard1.out
+	gcov -f -b dominion.c >> randomtestcard1.out
+	cat dominion.c.gcov >> randomtestcard1.out
+
+randomtestcard2.out: dominion.o interface.o randomtestcard2
+	./randomtestcard2 >> randomtestcard2.out
+	gcov -f -b dominion.c >> randomtestcard2.out
+	cat dominion.c.gcov >> randomtestcard2.out
+
+randomtestadventurer.out: dominion.o interface.o randomtestadventurer 
+	./randomtestadventurer >> randomtestadventurer.out
+	gcov -f -b dominion.c >> randomtestadventurer.out 
+	cat dominion.c.gcov >> randomtestadventurer.out 
 
 all: playdom player 
 
