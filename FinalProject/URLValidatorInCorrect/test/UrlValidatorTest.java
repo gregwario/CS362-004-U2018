@@ -541,7 +541,7 @@ public class UrlValidatorTest extends TestCase {
 	   UrlValidator urlVal = new UrlValidator(allowedSchemes, 0L);
 	   int failCount = 0;
 
-	   while (i < 1000) {
+	   while (i < 100000) {
 		   String nextTestUrl = "";
 
 		   // randomize the validity of the inputs
