@@ -51,7 +51,7 @@ int main() {
 
 			G.handCount[p] = handCount;                 // set the number of cards on hand
 			memcpy(&G_before, &G, sizeof(struct gameState)); // make a copy of game state
-			cardEffectCouncilRoom(p, &G, 0);				// call the refactored Council Room function
+			playCouncilRoom(&G, 0);				// call the refactored Council Room function
 															// now compare the number of cards in hand. it should have 4 extra cards, minus the 1 
 															// Adventurer card played.
 #if (DEBUGGING == 1)

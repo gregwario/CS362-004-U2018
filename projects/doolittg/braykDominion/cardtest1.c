@@ -51,7 +51,7 @@ int main() {
 
 			G.handCount[p] = handCount;                 // set the number of cards on hand
 			memcpy(&G_copy, &G, sizeof(struct gameState)); // make a copy of game state
-			cardEffectSmithy(p, &G, 0);					// call the refactored Smithy function
+			playSmithy(&G, 0);					// call the refactored Smithy function
 														// now compare the number of cards in hand. it should have 3 extra cards, minus the 1 smithy played.
 														// additionally, i added a bug in assignment 2 that smithy adds only 2 cards. after playing it, the 
 														// hand count will only go up by 1, but we'll test it as going up by 2, the way it's supposed to be.

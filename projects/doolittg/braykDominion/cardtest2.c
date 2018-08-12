@@ -58,7 +58,7 @@ int main() {
 					treasureCountBefore++;
 				}
 			}
-			cardEffectAdventurer(p, &G);				// call the refactored Adventurer function
+			playAdventurer(&G);				// call the refactored Adventurer function
 														// now compare the number of cards in hand. it should have 2 extra treasure cards, minus the 1 
 														// Adventurer card played.
 														// additionally, i added a bug in assignment 2 that Adventurer will add unlimited gold, and only
