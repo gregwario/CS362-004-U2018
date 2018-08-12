@@ -53,6 +53,9 @@ cardtest3: cardtest3.c dominion.o rngs.o assert_equal.o
 cardtest4: cardtest4.c dominion.o rngs.o assert_equal.o
 	gcc -o cardtest4 -g  cardtest4.c dominion.o rngs.o assert_equal.o $(CFLAGS)
 
+unittests: unittest1 unittest2 unittest3 unittest4
+cardtests: cardtest1 cardtest2 cardtest3
+
 badTestDrawCard: badTestDrawCard.c dominion.o rngs.o
 	gcc -o badTestDrawCard -g  badTestDrawCard.c dominion.o rngs.o $(CFLAGS)
 
@@ -106,7 +109,7 @@ randomtestadventurer.out: dominion.o interface.o randomtestadventurer
 	gcov -f -b dominion.c >> randomtestadventurer.out 
 	cat dominion.c.gcov >> randomtestadventurer.out 
 
-all: playdom player 
+all: playdom player unittests cardtests randomtestcards
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe test1 test2 test3 test4 test5 test6 test7 test8 randomtestcard1 randomtestcard2 randomtestadventurer randomtestresults.out
+	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe test1 test2 test3 test4 test5 test6 test7 test8 randomtestcard1 randomtestcard2 randomtestadventurer randomtestresults.out randomtestadventurer.out randomtestcard1.out randomtestcard2.out
