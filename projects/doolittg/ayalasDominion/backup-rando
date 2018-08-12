@@ -1,0 +1,112 @@
+/*******************
+* Greg Doolittle
+* CS362 Aburas
+* 8/5/2018
+* Assignment 4
+*
+* Description: this file tests the refactored code from assignment 2. Specifically,
+* it adds random tests for the adventure card.
+* 
+* This was added to the makefile to build this test:
+* randomtestcard1: randomtestcard1.c dominion.o rngs.o assert_equal.o
+*	gcc -o randomtestcard -g  randomtestcard1.c dominion.o rngs.o assert_equal.o $(CFLAGS)
+********************/
+
+#include "dominion.h"
+#include "dominion_helpers.h"
+#include "assert_equal.h"
+#include <assert.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "rngs.h"
+#include <time.h>
+#include <math.h>
+// set DEBUGGING to 0 to remove printfs from output
+#define DEBUGGING 1
+
+int checkSmithyCard(int p, struct gameState *post, int handPos);
+
+int main() {
+
+	time_t t;
+	srand((unsigned)time(&t));
+
+	//int p, handCount;
+	int cards[10] = { adventurer, council_room, feast, gardens, mine, remodel, smithy, village, baron, great_hall };
+	struct gameState G;
+
+	printf("TESTING Smithy: cardEffectSmithy():\n");
+	printf("TESTING card effect should add 3 cards and remove 1 card\n");
+    
+    const int NUM_TESTS = 5000;
+    int i = 0;
+    int bugCount = 0;
+    
+    while (i < NUM_TESTS) {
+        printf("test number %d\n", i);
+        // randomly arrange game state
+	    int seed = rand();
+        int numPlayers = 2; //rand() % 9 + 2; // 2-10 players
+        memset(&G, 23, sizeof(struct gameState));   // clear the game state
+        initializeGame(numPlayers, cards, seed, &G); // initialize a new game
+
+        // set the other random elements we need
+        int p = rand() % numPlayers; // any player
+        int handP = rand() % 5; // any of 5 cards in hand
+        G.handCount[p] = 5;
+
+        G.whoseTurn = p; //player;
+        G.deckCount[p] = rand() % 80 / 2;
+        G.handCount[p] = rand() % 20 / 2;  // MAX_HAND = 500
+
+        // randomly select a player
+        // call checkSmithyCard
+        bugCount += checkSmithyCard(p, &G, handP);
+        i++;
+    }
+    printf("Testing complete.\n\n\n");
+    if (bugCount) {
+        printf("Found %d bugs while testing Smithy.\n", bugCount);
+    } else {
+        printf("All tests pass! No bugs found while testing Smithy.\n");
+    }
+}
+
+int checkSmithyCard(int p, struct gameState *post, int handPos) {
+
+    struct gameState *pre;
+    //pre = (struct gameState*) malloc(sizeof(struct gameState));
+    memcpy(pre, post, sizeof(struct gameState));
+
+    int r;
+
+   // printf("before cardEffectSmithy\n");
+   // printf("player: %d\nhandpos: %d\n", p, handPos );
+
+
+    r = cardEffect(smithy, 0, 0, 0, post, handPos, 0);
+           // cardEffectSmithy(p, post, handPos);
+    //printf("r is %d\n", r);
+    //assert(r == 0);
+    printf("after cardEffectSmithy\n"); 
+    // we'll run smithy on pre copy of game state
+    int i;
+    for (i = 0; i < 3; i++) { // draw 3 cards
+        if (pre->deckCount[p] > 0) {
+     //       drawCard(p, pre);
+        }
+    }
+    printf("before discard\n"); 
+    //discardCard(handPos, p, pre, 0);
+    printf("after discard\n"); 
+
+    int bugCount;
+    // check that game state before is equal to game state after
+    if (0) { //memcmp(&pre, post, sizeof(struct gameState)) == 0) {
+        bugCount = 0;
+    } else {
+        bugCount = 1;
+    }
+    return bugCount;
+}
