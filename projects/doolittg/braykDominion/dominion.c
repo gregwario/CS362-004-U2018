@@ -647,7 +647,7 @@ int getCost(int cardNumber)
 int playSmithy(struct gameState *state, int handPos)
 {
   int currentPlayer = whoseTurn(state);
-  for (int i = 0; i < 2; i++)
+  for (int i = 0; i < 3; i++)
   {
     drawCard(currentPlayer, state);
   }
@@ -679,7 +679,7 @@ int playAdventurer(struct gameState *state)
     }
     else {
       temphand[z]=cardDrawn;
-      state->handCount[currentPlayer]++; //this should just remove the top card (the most recently drawn one).
+      state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
       z++;
     }
   }
@@ -744,7 +744,7 @@ int playCouncilRoom(struct gameState *state, int handPos)
   int currentPlayer = whoseTurn(state);
   
   //+4 Cards
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 4; i++) {
     drawCard(currentPlayer, state);
   }
 
