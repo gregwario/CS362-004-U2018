@@ -78,17 +78,18 @@ player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
 
 
-unittestresults.out: dominion.o interface.o cardtest1 cardtest2 cardtest3 cardtest4 unittest1 unittest2 unittest3 unittest4
+unittestresults.out: dominion.o interface.o cardtest1 cardtest2 cardtest3 unittest1 unittest2 unittest3 unittest4
 	./cardtest1 >> unittestresults.out
 	./cardtest2 >> unittestresults.out
 	./cardtest3 >> unittestresults.out
-	./cardtest4 >> unittestresults.out
 	./unittest1 >> unittestresults.out
 	./unittest2 >> unittestresults.out
 	./unittest3 >> unittestresults.out
 	./unittest4 >> unittestresults.out
 	gcov -f -b dominion.c >> unittestresults.out
 	cat dominion.c.gcov >> unittestresults.out 	
+
+#./cardtest4 >> unittestresults.out
 
 randomtestcard1.out: dominion.o interface.o randomtestcard1 
 	./randomtestcard1 >> randomtestcard1.out
