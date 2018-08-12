@@ -143,4 +143,11 @@ int cardEffectGardens();
 int cardEffectVillage(int currentPlayer, struct gameState *state, int handPos);
 /* add 1 card and two actions  */
 
+/* adding teammate's function names so that i can import them in my tests */
+int playSmithy(struct gameState *state, int handPos);
+int playAdventurer(struct gameState *state);
+int playCouncilRoom(struct gameState *state, int handPos);
+
+
+
 #endif

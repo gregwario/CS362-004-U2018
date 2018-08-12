@@ -97,9 +97,9 @@ int checkAdventurerCard(int p, struct gameState *post, int handPos) {
 
     int r;
 
-    // we'll call cardEffect, and use smithy card on 'post' game state
+    // we'll call cardEffect, and use adventurer card on 'post' game state
     //r = cardEffect(adventurer, 0, 0, 0, post, handPos, 0);
-    r = cardEffectAdventurer(p, post);
+    r = playAdventurer(post);
 
     assert(r == 0);
     
