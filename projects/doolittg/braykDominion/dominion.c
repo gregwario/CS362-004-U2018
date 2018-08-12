@@ -682,6 +682,10 @@ int playAdventurer(struct gameState *state)
       state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
       z++;
     }
+    // add a check to make sure there are cards left to draw from
+    if (state->handCount[currentPlayer] < 0) {
+        drawntreasure = 2;
+    } 
   }
 
   while(z-1>=0) {
