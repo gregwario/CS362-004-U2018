@@ -188,8 +188,9 @@ public class UrlValidatorTest extends TestCase {
 	   String badSchemes[] = {
 			   "asdffdsa",
 			   "3ht",
-			   "asdf"
-
+			   "asdf",
+			   "h$#p",
+			   ""
 	   };
 	   
 	   // using this constructor allows you to pass in a list of good schemes.  
